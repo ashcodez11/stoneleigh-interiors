@@ -1,0 +1,609 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+   STONELEIGH INTERIORS — DESIGN SYSTEM
+   Direction: TERRACOTTA & PORCELAIN — WARM DESIGNER LUXURY.
+
+   Warm porcelain and soft linen carry the page; pale sand cards and muted
+   terracotta accents give it warmth; burnt sienna deepens the accent; deep
+   warm brown holds the type; borders are a soft stone. The footer and every
+   dark section drop to a deep burnt espresso, so the site closes like the
+   final spread of an architecture magazine.
+
+   Balance: ~60% porcelain, ~30% linen and sand, ~10% terracotta.
+
+   Discipline: no gold, no cold blue, no neon, no saturated red, no pure-black
+   sections, no gratuitous glassmorphism. Restraint is the luxury.
+
+   NOTE ON TOKEN NAMES — the semantic utility names used by components
+   (ivory / linen / stone / taupe / sage / charcoal) are kept so no layout has
+   to change, but each now resolves to a value from the palette below. New
+   work may use the palette names directly.
+   ========================================================================== */
+
+@theme {
+  /* --- Palette — Terracotta & Porcelain --------------------------------- */
+  --color-porcelain: #f7f2ea; /* Main background — Warm Porcelain */
+  --color-sand: #d8c6b5; /* Card background — Pale Sand */
+  --color-terracotta: #b47760; /* Primary accent — Muted Terracotta */
+  --color-sienna: #875744; /* Secondary accent — Burnt Sienna */
+  --color-brown: #3b302b; /* Main text — Deep Warm Brown */
+  --color-stone-line: #d6c8b9; /* Borders — Soft Stone */
+
+  /* --- Palette — dark editorial system (footer & dark sections) --------- */
+  --color-espresso: #30231f; /* Ground — Deep Burnt Espresso */
+  --color-espresso-soft: #3b2b26; /* Secondary dark surface */
+  --color-espresso-line: #59443a; /* Subtle divider on espresso */
+  --color-terracotta-light: #c1846c; /* Accent, safe on espresso */
+  --color-sand-light: #c9b8aa; /* Secondary text on espresso */
+
+  /* --- Semantic aliases (kept for existing components) ------------------ */
+  --color-ivory: #f7f2ea; /* main surface → Warm Porcelain */
+  --color-ivory-deep: #e8ddd0; /* band surface → Soft Linen */
+  --color-linen: #e8ddd0; /* secondary surface / soft fills → Soft Linen */
+  --color-stone: #d6c8b9; /* borders & subtle marks → Soft Stone */
+  --color-stone-soft: #d8c6b5; /* image placeholder surface → Pale Sand */
+  --color-taupe: #796b60; /* secondary text → Warm Taupe */
+  --color-sage: #b47760; /* accent → Muted Terracotta */
+  --color-sage-deep: #875744; /* accent, text-safe on porcelain → Burnt Sienna */
+  --color-charcoal: #3b302b; /* primary type → Deep Warm Brown */
+  --color-charcoal-soft: #4a3d35; /* secondary type */
+  --color-charcoal-deep: #30231f; /* dark sections & footer → Deep Burnt Espresso */
+
+  /* Functional error tone. Deliberately redder and deeper than the sienna
+     accent so an error never reads as brand colour. Outside the palette. */
+  --color-error: #8e2f28;
+
+  /* --- Typography ------------------------------------------------------- */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, sans-serif;
+  --font-serif: var(--font-instrument), ui-serif, Georgia, "Times New Roman",
+    serif;
+
+  --text-eyebrow: 0.6875rem;
+  --text-eyebrow--line-height: 1.4;
+  --text-eyebrow--letter-spacing: 0.28em;
+
+  --text-display: clamp(3rem, 8.6vw, 8.25rem);
+  --text-display--line-height: 0.95;
+  --text-display--letter-spacing: -0.022em;
+
+  --text-headline: clamp(2.15rem, 5.4vw, 4.75rem);
+  --text-headline--line-height: 1.02;
+  --text-headline--letter-spacing: -0.016em;
+
+  --text-title: clamp(1.5rem, 2.7vw, 2.4rem);
+  --text-title--line-height: 1.14;
+  --text-title--letter-spacing: -0.01em;
+
+  --text-lede: clamp(1.0625rem, 1.5vw, 1.3125rem);
+  --text-lede--line-height: 1.72;
+
+  /* --- Motion ----------------------------------------------------------- */
+  --ease-luxe: cubic-bezier(0.19, 1, 0.22, 1);
+  --ease-silk: cubic-bezier(0.4, 0, 0.2, 1);
+
+  --animate-marquee: marquee 52s linear infinite;
+  --animate-scroll-hint: scroll-hint 2.4s var(--ease-silk) infinite;
+  --animate-soft-float: soft-float 9s var(--ease-silk) infinite;
+}
+
+@keyframes marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@keyframes scroll-hint {
+  0% {
+    transform: translateY(-60%);
+    opacity: 0;
+  }
+  40% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(60%);
+    opacity: 0;
+  }
+}
+
+@keyframes soft-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes progress-grow {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* ==========================================================================
+   BASE
+   ========================================================================== */
+
+@layer base {
+  :root {
+    color-scheme: light;
+    --header-h: 4.5rem;
+  }
+
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    /* Lenis owns smooth scrolling; the native fallback is restored below. */
+    scroll-behavior: auto;
+  }
+
+  body {
+    background-color: var(--color-ivory);
+    color: var(--color-charcoal);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.72;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  blockquote {
+    font-family: var(--font-serif);
+    /* Instrument Serif ships a single regular weight — 400 is its true weight,
+       and matches the editorial register we want. */
+    font-weight: 400;
+    color: var(--color-charcoal);
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  ::selection {
+    background-color: var(--color-sienna);
+    color: var(--color-porcelain);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-terracotta);
+    outline-offset: 3px;
+    border-radius: 1px;
+  }
+
+  /* Slim, quiet scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-linen);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-taupe);
+    border: 3px solid var(--color-linen);
+    border-radius: 999px;
+  }
+
+  /* --- Lenis smooth-scroll runtime styles ------------------------------- */
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+  .lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+  }
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: smooth;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* ==========================================================================
+   COMPONENTS
+   ========================================================================== */
+
+@layer components {
+  .container-luxe {
+    width: 100%;
+    max-width: 90rem;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+
+  @media (min-width: 768px) {
+    .container-luxe {
+      padding-inline: 2.5rem;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .container-luxe {
+      padding-inline: 4rem;
+    }
+  }
+
+  .container-narrow {
+    width: 100%;
+    max-width: 52rem;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+
+  @media (min-width: 768px) {
+    .container-narrow {
+      padding-inline: 2.5rem;
+    }
+  }
+
+  .section {
+    padding-block: clamp(4.5rem, 9vw, 9rem);
+  }
+
+  .section-tight {
+    padding-block: clamp(3.25rem, 6vw, 6rem);
+  }
+
+  /* --- Eyebrow / label -------------------------------------------------- */
+  .eyebrow {
+    font-family: var(--font-sans);
+    font-size: var(--text-eyebrow);
+    font-weight: 500;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--color-taupe);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .eyebrow::before {
+    content: "";
+    width: 1.75rem;
+    height: 1px;
+    background-color: currentColor;
+    opacity: 0.6;
+  }
+
+  .eyebrow-plain::before {
+    display: none;
+  }
+
+  .eyebrow-invert {
+    color: var(--color-stone);
+  }
+
+  /* --- Buttons ---------------------------------------------------------- */
+  .btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.7rem;
+    font-family: var(--font-sans);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 1.0625rem 2rem;
+    border: 1px solid transparent;
+    border-radius: 1px;
+    cursor: pointer;
+    overflow: hidden;
+    isolation: isolate;
+    transition:
+      color 0.35s var(--ease-luxe),
+      border-color 0.35s var(--ease-luxe),
+      background-color 0.35s var(--ease-luxe),
+      transform 0.35s var(--ease-luxe);
+    /* Touch target */
+    min-height: 3rem;
+  }
+
+  .btn > span {
+    position: relative;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+  }
+
+  /* Wipe fill, revealed from the bottom on hover */
+  .btn::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    transform: translateY(101%);
+    transition: transform 0.5s var(--ease-luxe);
+  }
+
+  .btn:hover::after,
+  .btn:focus-visible::after {
+    transform: translateY(0);
+  }
+
+  .btn-primary {
+    background-color: var(--color-brown);
+    color: var(--color-porcelain);
+  }
+  /* Sienna, not terracotta: terracotta is too light to carry 11px button text
+     at AA, so the hover fill steps to the deeper accent. */
+  .btn-primary::after {
+    background-color: var(--color-sienna);
+  }
+  .btn-primary:hover,
+  .btn-primary:focus-visible {
+    color: var(--color-porcelain);
+  }
+
+  .btn-light {
+    background-color: var(--color-linen);
+    color: var(--color-charcoal);
+  }
+  .btn-light::after {
+    background-color: var(--color-charcoal);
+  }
+  .btn-light:hover,
+  .btn-light:focus-visible {
+    color: var(--color-linen);
+  }
+
+  .btn-outline {
+    background-color: transparent;
+    border-color: color-mix(in srgb, var(--color-charcoal) 32%, transparent);
+    color: var(--color-charcoal);
+  }
+  .btn-outline::after {
+    background-color: var(--color-charcoal);
+  }
+  .btn-outline:hover,
+  .btn-outline:focus-visible {
+    color: var(--color-ivory);
+    border-color: var(--color-charcoal);
+  }
+
+  .btn-outline-invert {
+    background-color: transparent;
+    border-color: color-mix(in srgb, var(--color-linen) 45%, transparent);
+    color: var(--color-linen);
+  }
+  .btn-outline-invert::after {
+    background-color: var(--color-linen);
+  }
+  .btn-outline-invert:hover,
+  .btn-outline-invert:focus-visible {
+    color: var(--color-charcoal);
+    border-color: var(--color-linen);
+  }
+
+  /* Solid terracotta-family accent button — the footer enquiry CTA.
+     Base is burnt sienna (AA on porcelain-coloured text); on hover it wipes to
+     the lighter terracotta and the label steps down to espresso, so the button
+     lights up rather than dissolving into the dark footer ground. */
+  .btn-accent {
+    background-color: var(--color-sienna);
+    color: var(--color-porcelain);
+  }
+  .btn-accent::after {
+    background-color: var(--color-terracotta-light);
+  }
+  .btn-accent:hover,
+  .btn-accent:focus-visible {
+    color: var(--color-espresso);
+  }
+
+  /* --- Inline text link with hairline underline ------------------------- */
+  .link-underline {
+    position: relative;
+    display: inline-block;
+    padding-bottom: 0.2rem;
+  }
+  .link-underline::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 1px;
+    background-color: currentColor;
+    transform-origin: left;
+    transform: scaleX(1);
+    transition: transform 0.45s var(--ease-luxe);
+  }
+  .link-underline:hover::after,
+  .link-underline:focus-visible::after {
+    transform: scaleX(0);
+    transform-origin: right;
+  }
+
+  /* --- Navigation link -------------------------------------------------- */
+  .nav-link {
+    position: relative;
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding-block: 0.5rem;
+    transition: opacity 0.3s var(--ease-silk);
+  }
+  .nav-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0.15rem;
+    width: 100%;
+    height: 1px;
+    background-color: currentColor;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.45s var(--ease-luxe);
+  }
+  .nav-link:hover::after,
+  .nav-link:focus-visible::after,
+  .nav-link[data-active="true"]::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  /* --- Surfaces --------------------------------------------------------- */
+  .hairline {
+    height: 1px;
+    width: 100%;
+    background-color: color-mix(in srgb, var(--color-charcoal) 14%, transparent);
+  }
+
+  .hairline-invert {
+    height: 1px;
+    width: 100%;
+    background-color: color-mix(in srgb, var(--color-linen) 18%, transparent);
+  }
+
+  /* --- Forms ------------------------------------------------------------ */
+  .field {
+    width: 100%;
+    background-color: transparent;
+    border: 0;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-charcoal) 22%, transparent);
+    padding: 0.85rem 0;
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    color: var(--color-charcoal);
+    transition: border-color 0.3s var(--ease-silk);
+    border-radius: 0;
+    min-height: 2.75rem;
+  }
+  .field::placeholder {
+    color: color-mix(in srgb, var(--color-taupe) 85%, transparent);
+  }
+  .field:focus {
+    outline: none;
+    border-bottom-color: var(--color-sage);
+  }
+  .field[aria-invalid="true"] {
+    border-bottom-color: var(--color-error);
+  }
+
+  .field-label {
+    display: block;
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-taupe);
+    margin-bottom: 0.4rem;
+  }
+
+  /* --- Editorial figure with image reveal ------------------------------- */
+  .media {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--color-stone-soft);
+  }
+
+  .media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* --- Carousel autoplay progress --------------------------------------- */
+  .carousel-progress {
+    transform-origin: left center;
+    animation: progress-grow var(--carousel-duration, 6s) linear forwards;
+  }
+}
+
+/* ==========================================================================
+   UTILITIES
+   ========================================================================== */
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .clip-reveal {
+    clip-path: inset(0 0 100% 0);
+  }
+
+  .perspective-far {
+    perspective: 1800px;
+  }
+
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+
+  .grain::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.3;
+    background-image: radial-gradient(
+      color-mix(in srgb, var(--color-charcoal) 20%, transparent) 0.5px,
+      transparent 0.5px
+    );
+    background-size: 4px 4px;
+    mix-blend-mode: multiply;
+  }
+
+  /* Desktop-only custom cursor: hide the native one on fine pointers. */
+  @media (pointer: fine) {
+    .cursor-none-desktop,
+    .cursor-none-desktop * {
+      cursor: none;
+    }
+  }
+}
